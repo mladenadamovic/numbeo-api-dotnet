@@ -1,5 +1,4 @@
 using System.Text.Json;
-using System.Web;
 using NumbeoPricesApp.Models;
 
 namespace NumbeoPricesApp.Services;
@@ -45,12 +44,11 @@ public class NumbeoApiClient : IDisposable
         try
         {
             // Build the query string with proper URL encoding
-            var queryParams = HttpUtility.ParseQueryString(string.Empty);
-            queryParams["city"] = city;
-            queryParams["country"] = country;
-            queryParams["api_key"] = _apiKey;
+            var cityEncoded = Uri.EscapeDataString(city);
+            var countryEncoded = Uri.EscapeDataString(country);
+            var apiKeyEncoded = Uri.EscapeDataString(_apiKey);
 
-            var url = $"/city_prices?{queryParams}";
+            var url = $"/city_prices?city={cityEncoded}&country={countryEncoded}&api_key={apiKeyEncoded}";
 
             Console.WriteLine($"Fetching prices for {city}, {country}...");
 
